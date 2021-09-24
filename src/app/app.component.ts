@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalComponent } from './components/modal/modal.component';
 import { CreditDebitCardModel } from './models/card.model';
 
@@ -13,7 +14,8 @@ export class AppComponent implements OnInit {
   savedCardList = new Array<CreditDebitCardModel>();
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -36,10 +38,17 @@ export class AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      let existingCards = localStorage.getItem('savedCards');
-      if (existingCards?.length) {
-        this.savedCardList = JSON.parse(existingCards);
+      if(result) {
+        this.openSnackBar('New Card Added Successfully');
+        let existingCards = localStorage.getItem('savedCards');
+        if (existingCards?.length) {
+          this.savedCardList = JSON.parse(existingCards);
+        }
       }
     });
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message);
   }
 }

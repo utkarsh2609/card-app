@@ -1,4 +1,4 @@
-@import './variables';
+@import "./variables";
 
 header {
     display: flex;
@@ -14,4 +14,9 @@ header {
     margin-left: 5vw;
     padding: 2rem 0;
     overflow-y: auto;
+
+    .empty-list-message {
+        display: flex;
+        justify-content: center;
+    }
 }

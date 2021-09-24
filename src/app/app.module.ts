@@ -13,6 +13,7 @@ import { CardListComponent } from './components/card-list/card-list.component';
 import { ListCardItemComponent } from './components/list-card-item/list-card-item.component';
 import { MaterialModule } from './material/material.module';
 import { ModalComponent } from './components/modal/modal.component';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { ModalComponent } from './components/modal/modal.component';
     CreditCardDirectivesModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

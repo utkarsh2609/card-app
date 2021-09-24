@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreditDebitCardModel } from 'src/app/models/card.model';
 import { ModalComponent } from '../modal/modal.component';
 
@@ -15,7 +16,8 @@ export class ListCardItemComponent {
 
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) { }
 
   removeCard(cardNumber: any) {
@@ -27,6 +29,7 @@ export class ListCardItemComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.removeCardFromLocalStorage(cardNumber);
+        this.openSnackBar('Card was deleted')
       }
     });
   }
@@ -39,6 +42,10 @@ export class ListCardItemComponent {
       localStorage.setItem('savedCards', JSON.stringify(updatedList));
     }
     this.updateList.emit(true);
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message);
   }
 
 }
