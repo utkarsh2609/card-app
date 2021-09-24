@@ -1,0 +1,3 @@
+<div class="card-list">
+    <app-list-card-item *ngFor="let card of savedCards" [card]="card" (updateList)="fetchSavedCards()"></app-list-card-item>
+</div>

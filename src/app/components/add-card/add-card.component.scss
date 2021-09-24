@@ -1,0 +1,12 @@
+.add-card-form {
+    display: flex;
+    flex-direction: column;
+
+    .custom-form-field{
+        margin: 0.2rem 0;
+    }
+}
+.input-card-icon {
+    width: 30px;
+    height: 30px;
+}

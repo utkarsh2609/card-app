@@ -1,0 +1,17 @@
+@import './variables';
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+}
+
+.card-list-container {
+    border: 1px solid $primary-text-color;
+    width: 90vw;
+    max-height: 70rem;
+    height: 70%;
+    margin-left: 5vw;
+    padding: 2rem 0;
+    overflow-y: auto;
+}

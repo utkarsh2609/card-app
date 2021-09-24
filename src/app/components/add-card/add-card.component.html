@@ -1,0 +1,69 @@
+<form class="add-card-form" [formGroup]="addCardForm">
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Enter Debit / Credit Card Number</mat-label>
+    <input
+      matInput
+      #ccNumber="ccNumber"
+      id="cardNumber"
+      formControlName="cardNumber"
+      ccNumber
+      required
+    />
+    <mat-icon matSuffix>
+      <img
+        *ngIf="addCardForm.controls.cardNumber.value"
+        class="input-card-icon"
+        src="../../../assets/card-logo-img/logo/{{
+          ccNumber.resolvedScheme$ | async
+        }}.svg"
+        alt=""
+      />
+    </mat-icon>
+    <mat-error *ngIf="addCardForm.controls.cardNumber.invalid">
+      {{ getError(addCardForm.controls.cardNumber) }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>Expiry Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="dp"
+      formControlName="cardExpiryDate"
+      ccExp
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker
+      #dp
+      startView="multi-year"
+      (yearSelected)="chosenYearHandler($event)"
+      (monthSelected)="chosenMonthHandler($event, dp)"
+      panelClass="example-month-picker"
+    >
+    </mat-datepicker>
+    <mat-error *ngIf="addCardForm.controls.cardExpiryDate.invalid">
+        {{
+            getError(addCardForm.controls.cardExpiryDate)
+    }}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="custom-form-field">
+    <mat-label>CVV</mat-label>
+    <input
+      matInput
+      formControlName="cardCVV"
+      placeholder="CVV"
+      ccCVC
+      required
+    />
+    <mat-icon matSuffix>credit_card</mat-icon>
+    <mat-error *ngIf="addCardForm.controls.cardCVV.invalid">{{
+      getError(addCardForm.controls.cardCVV)
+    }}</mat-error>
+  </mat-form-field>
+  <!-- <div class="form-button-container">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+  </div> -->
+</form>

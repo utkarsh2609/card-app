@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content class="mat-typography">
+  <app-add-card
+    *ngIf="data.isSaveCardComponent"
+    (isAddCardFormValid)="updateSaveButton($event)"
+  ></app-add-card>
+
+  <app-remove-card *ngIf="data.isRemoveCardComponent"></app-remove-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    *ngIf="data.isSaveCardComponent"
+    color="primary"
+    [mat-dialog-close]="true"
+    [disabled]="!enableSaveCardButton"
+    (click)="addNewCard()"
+    cdkFocusInitial
+  >
+    Add
+  </button>
+  <button
+    mat-button
+    *ngIf="data.isRemoveCardComponent"
+    color="primary"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+  >
+    Remove
+  </button>
+</mat-dialog-actions>
