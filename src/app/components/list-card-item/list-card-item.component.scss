@@ -1,4 +1,4 @@
-@import '../../variables';
+@import "../../variables";
 :host {
     width: 90%;
     margin-bottom: 1rem;
@@ -7,17 +7,24 @@
 .card-container {
     display: flex;
     justify-content: space-between;
-    
-    .card-type{
+
+    .card-type {
         font-size: 12px;
         color: $secondary-text-color;
     }
-    
+
     .card-type-img {
         height: 40px;
         width: 60px;
         object-fit: cover;
         border: 1px solid $primary-text-color;
         border-radius: 5px;
+    }
+
+    .card-img-container,
+    .card-remove-btn-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
