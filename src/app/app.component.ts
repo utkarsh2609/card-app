@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ModalComponent } from './components/modal/modal.component';
+
 import { CreditDebitCardModel } from './models/card.model';
+import { CommonService } from './shared/services/common.service';
+import { ModalComponent } from './components/modal/modal.component';
+
+import {GET_SAVED_CARDS_KEY, ADDED_CARD_SUCCESS_MESSAGE, ADD_CARD_HEADER} from './shared/constants';
 
 @Component({
   selector: 'app-root',
@@ -15,40 +18,34 @@ export class AppComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
-    this.fetchSavedCardsFromLocalStorage();
+    this.getSavedCards();
   }
 
-  fetchSavedCardsFromLocalStorage(){
-    let existingCards = localStorage.getItem('savedCards');
-    if(existingCards?.length) {
-      this.savedCardList = JSON.parse(existingCards);
-    } else {
-      localStorage.setItem('savedCards', JSON.stringify(this.savedCardList))
+  getSavedCards(){
+    this.savedCardList = this.commonService.fetchSavedCardsFromLocalStorage();
+    if(!this.savedCardList.length) {
+      localStorage.setItem(GET_SAVED_CARDS_KEY, JSON.stringify(this.savedCardList))
     }
   }
 
   addCard() {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '350px',
-      data: { title: 'Add New Card', isSaveCardComponent: true }
+      data: { title: ADD_CARD_HEADER, isSaveCardComponent: true }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.openSnackBar('New Card Added Successfully');
-        let existingCards = localStorage.getItem('savedCards');
+        this.commonService.openSnackBar(ADDED_CARD_SUCCESS_MESSAGE);
+        let existingCards = localStorage.getItem(GET_SAVED_CARDS_KEY);
         if (existingCards?.length) {
           this.savedCardList = JSON.parse(existingCards);
         }
       }
     });
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message);
   }
 }

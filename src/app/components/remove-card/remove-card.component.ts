@@ -2,14 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-remove-card',
-  templateUrl: './remove-card.component.html',
-  styleUrls: ['./remove-card.component.scss']
+  template: '<p>Are you sure you want to delete this card?</p>'
 })
-export class RemoveCardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class RemoveCardComponent {
 }

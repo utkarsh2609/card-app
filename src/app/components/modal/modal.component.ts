@@ -1,7 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { CreditDebitCardModel } from 'src/app/models/card.model';
+import { CommonService } from 'src/app/shared/services/common.service';
+
+import { GET_SAVED_CARDS_KEY, CARD_ALREADY_EXISTS_MESSAGE } from '../../shared/constants';
 
 export interface DialogData {
   title: string;
@@ -21,11 +24,11 @@ export class ModalComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private _snackBar: MatSnackBar
+    private commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
-    if(this.data.isSaveCardComponent) {
+    if (this.data.isSaveCardComponent) {
       this.enableSaveCardButton = false;
     }
   }
@@ -34,7 +37,7 @@ export class ModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  updateSaveButton($event: any){
+  updateSaveButton($event: any) {
     this.enableSaveCardButton = $event.isValid;
     this.cardToBeSaved = $event.formDate;
   }
@@ -44,32 +47,20 @@ export class ModalComponent implements OnInit {
     newCard.cardNumber = this.cardToBeSaved.cardNumber;
     newCard.cardCVV = this.cardToBeSaved.cardCVV;
     newCard.cardExpiryDate = this.cardToBeSaved.cardExpiryDate;
-    if(!this.isCardAlreadyAdded(newCard.cardNumber)) {
-      let savedCards = localStorage.getItem('savedCards');
-      if(savedCards) {
-        let listOfCards = JSON.parse(savedCards);
-        listOfCards.push(newCard);
-        localStorage.setItem('savedCards', JSON.stringify(listOfCards));
-      }
+    if (!this.isCardAlreadyAdded(newCard.cardNumber)) {
+      let listOfCards = this.commonService.fetchSavedCardsFromLocalStorage();
+      listOfCards.push(newCard);
+      localStorage.setItem(GET_SAVED_CARDS_KEY, JSON.stringify(listOfCards));
       this.dialogRef.close(true);
     } else {
-      this.openSnackBar('This card already exists.');
+      this.commonService.openSnackBar(CARD_ALREADY_EXISTS_MESSAGE);
     }
   }
 
-  isCardAlreadyAdded(cardNumber: string | undefined): boolean{
-    let existingCards = localStorage.getItem('savedCards');
-    if (existingCards?.length) {
-      let updatedList = JSON.parse(existingCards) as Array<CreditDebitCardModel>;
-      updatedList = updatedList.filter(card => card.cardNumber === cardNumber);
-      console.log('CHECK', updatedList, cardNumber)
-      return updatedList.length ? true: false;
-    }
-    return false;
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message);
+  isCardAlreadyAdded(cardNumber: string | undefined): boolean {
+    let updatedList = this.commonService.fetchSavedCardsFromLocalStorage();
+    updatedList = updatedList.filter(card => card.cardNumber === cardNumber);
+    return updatedList.length ? true : false;
   }
 
 }

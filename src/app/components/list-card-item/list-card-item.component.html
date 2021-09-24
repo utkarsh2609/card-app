@@ -1,11 +1,16 @@
 <mat-card class="card-container">
-    <div>
-        <span class="card-type"> Credit Card Number </span> 
-        <h2>{{card.cardNumber}}</h2>
+    <div class="card-info-container">
+        <div>
+            <span class="card-type"> Credit Card Number </span> 
+            <h2>{{card.cardNumber | hideCardNumber}}</h2>
+        </div>
+        <div>
+            <img class="card-type-img" src="../../../assets/card-logo-img/logo/{{card.cardNumber | cardType}}.svg" alt="{{card.cardNumber | cardType}}">
+        </div>
     </div>
-    <div class="card-img-container">
-        <img class="card-type-img" src="../../../assets/card-logo-img/logo/mastercard.svg" alt="">
-    </div>
+    <!-- <div class="card-img-container">
+        <img class="card-type-img" src="../../../assets/card-logo-img/logo/{{card.cardNumber | cardType}}.svg" alt="{{card.cardNumber | cardType}}">
+    </div> -->
     <div class="card-remove-btn-container">
         <button mat-raised-button color="primary" (click)="removeCard(card.cardNumber)">Remove</button>
     </div>

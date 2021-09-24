@@ -14,6 +14,8 @@ import { ListCardItemComponent } from './components/list-card-item/list-card-ite
 import { MaterialModule } from './material/material.module';
 import { ModalComponent } from './components/modal/modal.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { HideCardNumberPipe } from './shared/pipes/hide-card-number.pipe';
+import { CardTypePipe } from './shared/pipes/card-type.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     RemoveCardComponent,
     CardListComponent,
     ListCardItemComponent,
-    ModalComponent
+    ModalComponent,
+    HideCardNumberPipe,
+    CardTypePipe
   ],
   imports: [
     BrowserModule,

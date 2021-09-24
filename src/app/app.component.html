@@ -1,14 +1,17 @@
 <main>
   <header>
-    <!-- <div class="header-container"> -->
-      <h1>My Wallet</h1>
-      <button mat-raised-button color="primary" (click)="addCard()">
-        Add New Card
-      </button>
-    <!-- </div> -->
+    <h1>My Wallet</h1>
+    <button mat-raised-button color="primary" (click)="addCard()">
+      Add New Card
+    </button>
   </header>
   <div class="card-list-container">
-    <h3 class="empty-list-message" *ngIf="!savedCardList.length">No Cards Added</h3>
-    <app-card-list [savedCards]="savedCardList" (updateList)="fetchSavedCardsFromLocalStorage()"></app-card-list>
+    <h3 class="empty-list-message" *ngIf="!savedCardList.length">
+      No Cards Added
+    </h3>
+    <app-card-list
+      [savedCards]="savedCardList"
+      (updateList)="getSavedCards()"
+    ></app-card-list>
   </div>
 </main>

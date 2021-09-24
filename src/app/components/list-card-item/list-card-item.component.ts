@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { CreditDebitCardModel } from 'src/app/models/card.model';
+import { CommonService } from 'src/app/shared/services/common.service';
 import { ModalComponent } from '../modal/modal.component';
+
+import { GET_SAVED_CARDS_KEY, DELETED_CARD_SUCCESS_MESSAGE, DELETE_CARD_HEADER } from '../../shared/constants';
 
 @Component({
   selector: 'app-list-card-item',
@@ -17,35 +20,28 @@ export class ListCardItemComponent {
 
   constructor(
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private commonService: CommonService,
   ) { }
 
   removeCard(cardNumber: any) {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '350px',
-      data: { title: 'Delete Card', isRemoveCardComponent: true }
+      data: { title: DELETE_CARD_HEADER, isRemoveCardComponent: true }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.removeCardFromLocalStorage(cardNumber);
-        this.openSnackBar('Card was deleted')
+        this.commonService.openSnackBar(DELETED_CARD_SUCCESS_MESSAGE)
       }
     });
   }
 
   removeCardFromLocalStorage(cardNumber: any) {
-    let existingCards = localStorage.getItem('savedCards');
-    if (existingCards?.length) {
-      let updatedList = JSON.parse(existingCards) as Array<any>;
-      updatedList = updatedList.filter(card => card.cardNumber !== cardNumber);
-      localStorage.setItem('savedCards', JSON.stringify(updatedList));
-    }
+    let updatedList = this.commonService.fetchSavedCardsFromLocalStorage();;
+    updatedList = updatedList.filter(card => card.cardNumber !== cardNumber);
+    localStorage.setItem(GET_SAVED_CARDS_KEY, JSON.stringify(updatedList));
     this.updateList.emit(true);
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message);
   }
 
 }
